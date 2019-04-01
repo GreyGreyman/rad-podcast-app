@@ -1,0 +1,21 @@
+.main-container {
+    padding: 30px;
+}
+
+.episode-list {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.episode-list__item {
+    display: flex;
+}
+
+.episode-list__item:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.episode-list-item__play {
+    margin-right: 10px;
+}
