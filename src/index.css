@@ -19,3 +19,9 @@
 .episode-list-item__play {
     margin-right: 10px;
 }
+
+.menu__link {
+    color: darkcyan;
+    font-size: 20px;
+    text-decoration: none;
+}

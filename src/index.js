@@ -1,51 +1,96 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { cors_api_url } from './utils'
-import { Content } from './components/Content';
+import { PodcastList } from './components/PodcastList'
+import { EpisodeList } from './components/EpisodeList';
 import { Player } from './components/Player';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+
+const podcasts_stub = [
+    {
+        title: 'syntax',
+        feed: 'http://feed.syntax.fm/rss',
+        episodes: []
+    },
+    {
+        title: 'dad and sons',
+        feed: 'http://feeds.soundcloud.com/users/soundcloud:users:365723144/sounds.rss',
+        episodes: []
+    },
+]
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            episodes: [],
-            selected: null
+            podcasts: podcasts_stub,
+            selectedEpisode: null,
+            selectedPodcast: null,
+            playingEpisode: {
+                podcast: null,
+                episode: null
+            }
         }
         this.handleEpisodeSelect = this.handleEpisodeSelect.bind(this);
+        this.handlePodcastSelect = this.handlePodcastSelect.bind(this);
+        this.handlePodcastUpdate = this.handlePodcastUpdate.bind(this);
     }
 
-    componentDidMount = async () => {
-        let xml = await fetch(cors_api_url + 'http://feed.syntax.fm/rss').then((res) => res.text());
-        let domParser = new DOMParser();
-        let doc = domParser.parseFromString(xml, 'text/xml');
-        let items = doc.querySelectorAll('item');
-        let episodes = [];
-        items.forEach((episode) => {
-            episodes.push({
-                title: episode.querySelector('title').textContent,
-                link: episode.querySelector('link').textContent
-            })
+    handleEpisodeSelect(podcast, episode) {
+        this.setState({
+            playingEpisode: {
+                podcast,
+                episode
+            }
         });
-        episodes = episodes.slice(0, 5);
-        this.setState({ episodes })
     }
 
-    handleEpisodeSelect(i) {
-        this.setState({ selected: i })
+    handlePodcastSelect(i) {
+        this.setState({ selectedPodcast: i })
+    }
+
+    handlePodcastUpdate(key, podcast) {
+        let podcasts = [...this.state.podcasts];
+        podcasts[key] = podcast;
+        this.setState({ podcasts });
     }
 
     render() {
-        let selected = this.state.episodes[this.state.selected];
+        let selectedPodcast = this.state.podcasts[this.state.selectedPodcast];
+        let playingPodcast = this.state.podcasts[this.state.playingEpisode.podcast];
+        let playingEpisode = playingPodcast !== undefined ?
+            playingPodcast.episodes[this.state.playingEpisode.episode] : undefined;
         return (
             <React.Fragment>
-                <Content episodes={this.state.episodes} onSelect={this.handleEpisodeSelect} />
-                {selected !== undefined &&
-                    <Player title={selected.title} link={selected.link} />
-                }
+                <ul>
+                    <li>
+                        <Link className='menu__link' to="/">Home</Link>
+                    </li>
+                </ul>
+                <Route exact path='/' render={props =>
+                    <PodcastList
+                        {...props}
+                        podcasts={this.state.podcasts}
+                        onSelect={this.handlePodcastSelect}
+                    />} />
+                <Route path='/:id' render={props => {
+                    return (
+                        <EpisodeList
+                            {...props}
+                            podcast={selectedPodcast}
+                            selectedPodcast={this.state.selectedPodcast}
+                            onSelect={this.handleEpisodeSelect}
+                            onUpdate={this.handlePodcastUpdate}
+                        />)
+                }}/>
+                <Player {...playingEpisode} />
             </React.Fragment>
         )
     }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
+    document.getElementById('root'));
