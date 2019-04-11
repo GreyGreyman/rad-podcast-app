@@ -1,38 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Header from './components/Header';
+import { Search } from './components/Search';
 import { PodcastList } from './components/PodcastList'
-import { EpisodeList } from './components/EpisodeList';
+import { PodcastDetail } from './components/PodcastDetail';
 import { Player } from './components/Player';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-
-const podcasts_stub = [
-    {
-        title: 'syntax',
-        feed: 'http://feed.syntax.fm/rss',
-        episodes: []
-    },
-    {
-        title: 'dad and sons',
-        feed: 'http://feeds.soundcloud.com/users/soundcloud:users:365723144/sounds.rss',
-        episodes: []
-    },
-]
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import podcasts_stub from './podcasts_stub';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             podcasts: podcasts_stub,
-            selectedEpisode: null,
-            selectedPodcast: null,
+            // selectedEpisode: null,
+            // selectedPodcast: null,
             playingEpisode: {
                 podcast: null,
                 episode: null
             }
         }
         this.handleEpisodeSelect = this.handleEpisodeSelect.bind(this);
-        this.handlePodcastSelect = this.handlePodcastSelect.bind(this);
+        // this.handlePodcastSelect = this.handlePodcastSelect.bind(this);
         this.handlePodcastUpdate = this.handlePodcastUpdate.bind(this);
     }
 
@@ -45,9 +35,9 @@ class App extends React.Component {
         });
     }
 
-    handlePodcastSelect(i) {
-        this.setState({ selectedPodcast: i })
-    }
+    // handlePodcastSelect(i) {
+    //     this.setState({ selectedPodcast: i })
+    // }
 
     handlePodcastUpdate(key, podcast) {
         let podcasts = [...this.state.podcasts];
@@ -56,34 +46,36 @@ class App extends React.Component {
     }
 
     render() {
-        let selectedPodcast = this.state.podcasts[this.state.selectedPodcast];
         let playingPodcast = this.state.podcasts[this.state.playingEpisode.podcast];
         let playingEpisode = playingPodcast !== undefined ?
             playingPodcast.episodes[this.state.playingEpisode.episode] : undefined;
+
         return (
             <React.Fragment>
-                <ul>
-                    <li>
-                        <Link className='menu__link' to="/">Home</Link>
-                    </li>
-                </ul>
-                <Route exact path='/' render={props =>
-                    <PodcastList
-                        {...props}
-                        podcasts={this.state.podcasts}
-                        onSelect={this.handlePodcastSelect}
-                    />} />
-                <Route path='/:id' render={props => {
-                    return (
-                        <EpisodeList
+
+                <Header />
+                <div className='content'>
+                    <Route exact path='/' render={props => <Redirect {...props} to='/podcasts' />} />
+                    <Route path='/search/:query' render={props => <Search {...props} />} />
+                    <Route exact path='/podcasts' render={props =>
+                        <PodcastList
                             {...props}
-                            podcast={selectedPodcast}
-                            selectedPodcast={this.state.selectedPodcast}
-                            onSelect={this.handleEpisodeSelect}
-                            onUpdate={this.handlePodcastUpdate}
-                        />)
-                }}/>
+                            podcasts={this.state.podcasts}
+                        />}
+                    />
+
+                    <Route path='/podcasts/:id' render={route_props => 
+                            <PodcastDetail
+                                {...route_props}
+                                podcast={this.state.podcasts[route_props.match.params.id]}
+                                podcastKey={route_props.match.params.id}
+                                onEpisodeSelect={this.handleEpisodeSelect}
+                                onPodcastUpdate={this.handlePodcastUpdate}
+                            />}
+                    />
+                </div>
                 <Player {...playingEpisode} />
+
             </React.Fragment>
         )
     }

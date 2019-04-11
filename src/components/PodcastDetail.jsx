@@ -14,9 +14,9 @@ class Episode extends React.Component {
     }
 }
 
-export class EpisodeList extends React.Component {
+export class PodcastDetail extends React.Component {
     componentDidMount = async () => {
-        console.log('Episode list did mount');
+        console.log('PodcastDetail did mount');
 
         let xml = await fetch(cors_api_url + this.props.podcast.feed).then((res) => res.text());
         let domParser = new DOMParser();
@@ -29,27 +29,30 @@ export class EpisodeList extends React.Component {
                 link: episode.querySelector('enclosure').getAttribute('url')
             })
         });
-        episodes = episodes.slice(0, 5);
-        this.props.onUpdate(this.props.selectedPodcast, { ...this.props.podcast, episodes });
+
+        episodes = episodes.slice(0, 15);
+        this.props.onPodcastUpdate(this.props.podcastKey, { ...this.props.podcast, episodes });
     }
     componentDidUpdate() {
-        console.log('Episode list did update');
+        console.log('PodcastDetail did update');
     }
     render() {
-        let episodeList = this.props.podcast.episodes.map((episode, index) => {
-            return ( 
-                <Episode 
-                    title={episode.title} 
-                    onClick={() => this.props.onSelect(this.props.selectedPodcast, index)}
+        let episodes = this.props.podcast.episodes.map((episode, index) => {
+            return (
+                <Episode
+                    title={episode.title}
+                    onClick={() => this.props.onEpisodeSelect(this.props.podcastKey, index)}
                 />);
         });
         return (
             <React.Fragment>
+                <h1>{this.props.podcast.title}</h1>
+                <p>{this.props.podcast.description}</p>
                 <ul className='episode-list'>
-                    {episodeList}
+                    {episodes}
                 </ul>
             </React.Fragment>
-            
+
         );
     }
 }
