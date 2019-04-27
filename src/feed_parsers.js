@@ -9,15 +9,15 @@ export function myFeedParser(xml) {
       link: episode.querySelector('enclosure').getAttribute('url')
     })
   );
+  episodes = episodes.slice(0, 15);
+
 
   let description = [
     doc.querySelector('channel > description') ? doc.querySelector('channel > description').textContent : '',
     doc.querySelector('channel > summary') ? doc.querySelector('channel > summary').textContent : '',
   ]
   description = description.reduce((max, string) => string.length > max.length ? string : max);
-
-  episodes = episodes.slice(0, 15);
-
+  
   const podcast = {
     title: doc.querySelector('title').textContent,
     artist: doc.querySelector('author').textContent,

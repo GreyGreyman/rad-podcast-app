@@ -16,23 +16,23 @@ class App extends React.Component {
       podcasts: podcasts_stub,
       // selectedEpisode: null,
       searchPodcast: null,
-      playingEpisode: {
-        podcast: null,
-        episode: null
-      }
+      playingEpisode: undefined,
     }
     this.handleEpisodeSelect = this.handleEpisodeSelect.bind(this);
     this.handlePodcastSearchSelect = this.handlePodcastSearchSelect.bind(this);
     this.handlePodcastUpdate = this.handlePodcastUpdate.bind(this);
   }
 
-  handleEpisodeSelect(podcast, episode) {
-    this.setState({
-      playingEpisode: {
-        podcast,
-        episode
+  handleSubscribe = (podcast) => {
+    this.setState(
+      {
+        podcasts: { ...this.state.podcasts, ...podcast }
       }
-    });
+    );
+  }
+
+  handleEpisodeSelect(playingEpisode) {
+    this.setState({ playingEpisode });
   }
 
   handlePodcastSearchSelect(searchPodcast) {
@@ -46,9 +46,6 @@ class App extends React.Component {
   }
 
   render() {
-    let playingPodcast = this.state.podcasts[this.state.playingEpisode.podcast];
-    let playingEpisode = playingPodcast !== undefined ?
-      playingPodcast.episodes[this.state.playingEpisode.episode] : undefined;
 
     return (
       <React.Fragment>
@@ -75,12 +72,13 @@ class App extends React.Component {
                   podcast={this.state.podcasts[route_props.match.params.id]}
                   onEpisodeSelect={this.handleEpisodeSelect}
                   onPodcastUpdate={this.handlePodcastUpdate}
+                  onSubscribe={this.handleSubscribe}
                 />);
             }
             } />
           </Switch>
         </div>
-        <Player {...playingEpisode} />
+        <Player {...this.state.playingEpisode} />
 
       </React.Fragment>
     )

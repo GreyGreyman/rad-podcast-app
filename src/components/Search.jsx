@@ -5,17 +5,7 @@ import { Link } from 'react-router-dom';
 function SearchItem({ item, onSelect }) {
   return (
     <li>
-      <Link to={`/podcasts/${item.trackId}`} onClick={() => onSelect(item.trackId,
-        {
-          id: item.trackId,
-          title: item.trackName,
-          artist: item.artistName,
-          description: 'null',
-          feed: item.feedUrl,
-          episodes: [],
-        })
-
-      }>
+      <Link to={`/podcasts/${item.trackId}`}>
         <p>{item.trackName}</p>
         <p>{item.artistName}</p>
       </Link>
