@@ -14,7 +14,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       podcasts: podcasts_stub,
-      // selectedEpisode: null,
       searchPodcast: null,
       playingEpisode: undefined,
     }
@@ -25,9 +24,7 @@ class App extends React.Component {
 
   handleSubscribe = (podcast) => {
     this.setState(
-      {
-        podcasts: { ...this.state.podcasts, ...podcast }
-      }
+      { podcasts: { ...this.state.podcasts, ...podcast } }
     );
   }
 
@@ -58,24 +55,15 @@ class App extends React.Component {
             <Route exact path='/podcasts' render={route_props =>
               <PodcastList {...route_props} podcasts={this.state.podcasts} />}
             />
-
-            <Route path='/podcasts/:id' render={route_props => {
-              // let podcast = {};
-              // let key = route_props.match.params.id;
-              // if (this.state.podcasts[key] !== undefined) {
-              //     podcast = this.state.podcasts[key];
-              // }
-
-              return (
-                <PodcastDetail
-                  {...route_props}
-                  podcast={this.state.podcasts[route_props.match.params.id]}
-                  onEpisodeSelect={this.handleEpisodeSelect}
-                  onPodcastUpdate={this.handlePodcastUpdate}
-                  onSubscribe={this.handleSubscribe}
-                />);
-            }
-            } />
+            <Route path='/podcasts/:id' render={route_props =>
+              <PodcastDetail
+                {...route_props}
+                podcast={this.state.podcasts[route_props.match.params.id]}
+                onEpisodeSelect={this.handleEpisodeSelect}
+                onPodcastUpdate={this.handlePodcastUpdate}
+                onSubscribe={this.handleSubscribe}
+              />}
+            />
           </Switch>
         </div>
         <Player {...this.state.playingEpisode} />

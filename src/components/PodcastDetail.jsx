@@ -1,30 +1,28 @@
 import React from 'react';
 import { cors_api_url } from '../utils'
 import { myFeedParser } from '../feed_parsers'
-
-
-class Episode extends React.Component {
-  render() {
-    return (
-      <li className='episode-list__item'>
-        <button className='episode-list-item__play' onClick={this.props.onClick}>
-          Play
-        </button>
-        <p>{this.props.title}</p>
-      </li>
-    )
-  }
-}
+import { Episode } from './Episode';
 
 export class PodcastDetail extends React.Component {
+
+  static defaultProps = {
+    podcast: {
+      title: null,
+      artist: null,
+      description: null,
+      episodes: [],
+      feed: null
+    }
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      subscribed: this.props.podcast.feed ? true : false, 
+      subscribed: this.props.podcast.feed ? true : false,
       podcast: this.props.podcast,
     }
-      
   }
+
   async componentDidMount() {
     console.log('PodcastDetail did mount');
 
@@ -40,11 +38,9 @@ export class PodcastDetail extends React.Component {
     let podcast = myFeedParser(xml);
 
     if (this.state.subscribed) {
-      console.log('update global state podcast');
       this.props.onPodcastUpdate(this.props.match.params.id, { ...this.props.podcast, ...podcast });
     }
     else {
-      console.log('update local state podcast');
       this.setState({
         podcast: { ...podcast, feed, id: this.props.match.params.id }
       });
@@ -53,8 +49,8 @@ export class PodcastDetail extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     // console.log(props.podcast);
-    
-    if ( props.podcast.feed && props.podcast !== state) 
+
+    if (props.podcast.feed && props.podcast !== state)
       return {
         subscribed: true,
         podcast: props.podcast
@@ -77,27 +73,22 @@ export class PodcastDetail extends React.Component {
     return (
       <React.Fragment>
         <h1>{this.state.podcast.title}</h1>
+
         {this.state.subscribed ?
-          <p>subscribed</p>
-          :
-          <button onClick={() => this.props.onSubscribe({ [this.state.podcast.id]: this.state.podcast })}>
-            subscribe
-          </button>}
+          (
+            <p>subscribed</p>
+          ) : (
+            <button onClick={() => this.props.onSubscribe({ [this.state.podcast.id]: this.state.podcast })}>
+              subscribe
+            </button>
+          )
+        }
+
         <p>{this.state.podcast.description}</p>
         <ul className='episode-list'>
           {episodes}
         </ul>
       </React.Fragment>
     );
-  }
-}
-
-PodcastDetail.defaultProps = {
-  podcast: {
-    title: null,
-    artist: null,
-    description: null,
-    episodes: [],
-    feed: null
   }
 }
