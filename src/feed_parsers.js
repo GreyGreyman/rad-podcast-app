@@ -17,12 +17,15 @@ export function myFeedParser(xml) {
     doc.querySelector('channel > summary') ? doc.querySelector('channel > summary').textContent : '',
   ]
   description = description.reduce((max, string) => string.length > max.length ? string : max);
+
+  let image = doc.querySelector('image[href]').getAttribute('href');
   
   const podcast = {
     title: doc.querySelector('title').textContent,
     artist: doc.querySelector('author').textContent,
     description,
     episodes,
+    image
   }
   return podcast;
 }

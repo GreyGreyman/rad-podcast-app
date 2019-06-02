@@ -63,28 +63,43 @@ export class PodcastDetail extends React.Component {
   }
 
   render() {
-    let episodes = this.state.podcast.episodes.map((episode) => {
+    const podcast = this.state.podcast;
+    const episodes = podcast.episodes.map((episode) => {
       return (
         <Episode
           title={episode.title}
           onClick={() => this.props.onEpisodeSelect(episode)}
         />);
     });
+
     return (
       <React.Fragment>
-        <h1>{this.state.podcast.title}</h1>
+        <div className='podcast-info'>
+          <img className='podcast-info__image' src={podcast.image} alt={podcast.title + 'podcast logo'} />
+          <div className='podcast-details'>
 
-        {this.state.subscribed ?
-          (
-            <p>subscribed</p>
-          ) : (
-            <button onClick={() => this.props.onSubscribe({ [this.state.podcast.id]: this.state.podcast })}>
-              subscribe
-            </button>
-          )
-        }
+            <div className='podcast-details__title-container'>
+              <h1 className='podcast-details__title'>{podcast.title}</h1>
 
-        <p>{this.state.podcast.description}</p>
+
+              {this.state.subscribed ?
+                (
+                  <button className='podcast-details__subscribe-button'> subscribed </button>
+                ) : (
+                  <button
+                    className='podcast-details__subscribe-button'
+                    onClick={() => this.props.onSubscribe({ [podcast.id]: podcast })}
+                  >
+                    subscribe
+                  </button>
+                )
+              }
+            </div>
+
+            <p>{podcast.description}</p>
+          </div>
+        </div>
+
         <ul className='episode-list'>
           {episodes}
         </ul>

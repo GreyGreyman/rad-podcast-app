@@ -54,6 +54,7 @@ body {
 
  .episode-list {
     margin: 0;
+    margin-top: 30px;
     padding: 0;
     margin-bottom: 20px;
 }
@@ -86,4 +87,76 @@ body {
 
 .player audio {
     width: 100%;
+}
+
+.podcast-list {
+  padding: 30px 0;
+  margin: 0;
+  list-style: none;
+}
+
+.podcast-list__item:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.podcast-list-item {
+  display: flex;
+  align-items: center;
+
+  text-decoration: none;
+  color: inherit;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.podcast-list-item:hover {
+  color: #03A9F4;
+}
+
+.podcast-list-item__image {
+  margin-right: 20px;
+  margin-left: 2px;
+  width: 60px;
+  height: 60px;
+
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.podcast-info {
+  margin-top: 30px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.podcast-info__image {
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+
+  margin-right: 30px;
+}
+
+.podcast-details__title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.podcast-details {
+  padding-right: 10px;
+}
+
+.podcast-details__title {
+  margin: 0;
+}
+
+.podcast-details__subscribe-button {
+  width: 100px;
+  padding: 10px 0;
+  border: none;
+  font-size: 14px;
+  /* font-weight: bold; */
+  border-radius: 15px;
+
+  cursor: pointer;
 }
