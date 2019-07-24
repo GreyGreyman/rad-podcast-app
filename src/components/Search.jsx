@@ -3,11 +3,15 @@ import { cors_api_url } from '../utils'
 import { Link } from 'react-router-dom';
 
 function SearchItem({ item, onSelect }) {
+  console.log(item);
   return (
-    <li>
-      <Link to={`/podcasts/${item.trackId}`}>
-        <p>{item.trackName}</p>
-        <p>{item.artistName}</p>
+    <li className='search-item'>
+      <Link to={`/podcasts/${item.trackId}`} className='search-item__link'>
+        <img className='search-item__image' src={item.artworkUrl100} alt="" />
+        <div>
+          <p>{item.trackName}</p>
+          <p>{item.artistName}</p>
+        </div>
       </Link>
     </li>
   );
@@ -58,7 +62,7 @@ export class Search extends React.Component {
       />
     );
     return (
-      <ul>
+      <ul className='search__list'>
         {results}
       </ul>
     );
