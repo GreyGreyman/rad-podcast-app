@@ -21,13 +21,20 @@ class Header extends React.PureComponent {
         <nav>
           <ul className='site-navigation'>
             <li>
-              <Link className='site-navigation__link' to="/">Rad Podcast App</Link>
+              <Link className='site-navigation__link' to="/">
+                Rad Podcast App
+              </Link>
             </li>
           </ul>
         </nav>
 
         <form className='search' onSubmit={this.handleSubmit}>
-          <input className='search__input' id='search' type="text" placeholder="Find podcasts" />
+          <input
+            className='search__input'
+            id='search'
+            type="text"
+            placeholder="Find podcasts"
+          />
         </form>
       </header>
     )

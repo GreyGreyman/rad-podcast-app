@@ -29,7 +29,8 @@ export class PodcastDetail extends React.Component {
     let feed = this.state.feed;
 
     if (!feed) {
-      const response = await fetch(cors_api_url + `https://itunes.apple.com/lookup?id=${this.props.match.params.id}`)
+      const response =
+        await fetch(cors_api_url + `https://itunes.apple.com/lookup?id=${this.props.match.params.id}`)
         .then((res) => res.json());
       feed = response.results[0].feedUrl;
     }
@@ -80,7 +81,6 @@ export class PodcastDetail extends React.Component {
 
             <div className='podcast-details__title-container'>
               <h1 className='podcast-details__title'>{podcast.title}</h1>
-
 
               {this.state.subscribed ?
                 (

@@ -9,7 +9,11 @@ export class PodcastList extends React.Component {
       return (
         <li className='podcast-list__item' key={key}>
           <Link to={`/podcasts/${key}`} className='podcast-list-item'>
-            <img className='podcast-list-item__image' src={item.image} alt={`${item.title} podcast logo`}/>
+            <img
+              className='podcast-list-item__image'
+              src={item.image}
+              alt={`${item.title} podcast logo`}
+            />
             {item.title}
           </Link>
         </li>

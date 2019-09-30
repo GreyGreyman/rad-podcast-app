@@ -58,10 +58,6 @@ html {
   background-color: white;
 }
 
-.search-item:not(:last-child) {
-  /* margin-bottom: 10px; */
-}
-
 .search-item__link {
   padding: 5px;
   display: flex;
