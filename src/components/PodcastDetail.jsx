@@ -1,6 +1,6 @@
 import React from 'react';
-import { cors_api_url } from '../utils'
-import { myFeedParser } from '../feed_parsers'
+import { cors_api_url } from '../utils/utils'
+import { myFeedParser } from '../utils/feed_parsers'
 import { Episode } from './Episode';
 
 export class PodcastDetail extends React.Component {

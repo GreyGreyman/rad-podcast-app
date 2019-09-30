@@ -1,5 +1,5 @@
 import React from 'react';
-import { cors_api_url } from '../utils'
+import { cors_api_url } from '../utils/utils'
 import { Link } from 'react-router-dom';
 
 function SearchItem({ item, onSelect }) {
