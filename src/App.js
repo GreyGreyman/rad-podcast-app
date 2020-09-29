@@ -1,12 +1,11 @@
 import React from 'react';
 import Header from './components/Header';
-import { Search } from './components/Search';
-import { PodcastList } from './components/PodcastList'
+import SearchResults from './components/Search';
+import PodcastList from './components/PodcastList'
 import { PodcastDetail } from './components/PodcastDetail';
 import Player from './components/Player';
 import podcasts_stub from './utils/podcasts_stub';
 import { Route, Redirect, Switch } from 'react-router-dom';
-
 
 
 class App extends React.Component {
@@ -52,7 +51,6 @@ class App extends React.Component {
       playingEpisode,
       history: this.updateHistory(this.state.history, playingEpisode),
     });
-
   }
 
   handlePodcastSearchSelect(searchPodcast) {
@@ -66,19 +64,12 @@ class App extends React.Component {
   }
 
   render() {
-
     return (
       <React.Fragment>
-
         <Header />
         <div className='content'>
           <Switch>
-            <Route path='/search/:term' render={route_props =>
-              <Search {...route_props} onSelect={this.handlePodcastUpdate} />} />
-            <Route exact path='/' render={route_props =>
-              <Redirect {...route_props} to='/podcasts' />} />
-            <Route exact path='/podcasts' render={route_props =>
-              <PodcastList {...route_props} podcasts={this.state.podcasts} />} />
+            <Route path='/search/:term'><SearchResults /></Route>
             <Route path='/podcasts/:id' render={route_props =>
               <PodcastDetail
                 {...route_props}
@@ -87,10 +78,15 @@ class App extends React.Component {
                 onPodcastUpdate={this.handlePodcastUpdate}
                 onSubscribe={this.handleSubscribe}
               />} />
+            <Route path='/podcasts' >
+              <PodcastList podcasts={this.state.podcasts} />
+            </Route>
+            <Route path='/' >
+              <Redirect to='/podcasts' />
+            </Route>
           </Switch>
         </div>
         <Player {...this.state.playingEpisode} />
-
       </React.Fragment>
     )
   }
