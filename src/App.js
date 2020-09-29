@@ -3,7 +3,7 @@ import Header from './components/Header';
 import { Search } from './components/Search';
 import { PodcastList } from './components/PodcastList'
 import { PodcastDetail } from './components/PodcastDetail';
-import { Player } from './components/Player';
+import Player from './components/Player';
 import podcasts_stub from './utils/podcasts_stub';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
