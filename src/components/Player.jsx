@@ -18,4 +18,6 @@ const Player = React.memo(({ title = 'nothing!', link = '' }) => {
   )
 })
 
+Player.displayName = 'Player'
+
 export default Player;
